@@ -6,7 +6,7 @@ def read_contacts():
     try:
         with open('contact_list.txt','r') as file:
             for line in file:
-                data = re.search(r'([\w\s]+)-:-( [a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+)-:-(\d{3}-\d{3}-\d{4})', line)
+                data = re.search(r'([\w\s]+)-:-([a-zA-Z\.0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+)-:-(\d{3}-\d{3}-\d{4})', line)
                 contact_list[data.group(1)]= {'Email': data.group(2).strip(), 'Phone Number': data.group(3).strip()}
     except: 
         print("file not found or unable to be read")
@@ -17,6 +17,7 @@ def read_contacts():
 def write_contacts(contact_list):
     with open('contact_list.txt', 'w') as file:
         for name, details in contact_list.items():
+            print(name,details)
             file.write(f"{name}-:-{details['Email']}-:-{details['Phone Number']}\n")
 
 
@@ -25,7 +26,7 @@ def add_contact(contact_list):
     name = input('Name: ')
     email = input('what is your email? ')
     number = input('what is your number? ')
-    contact_list[name] = {'Email': email, 'Number': number}
+    contact_list[name] = {'Email': email, 'Phone Number': number}
     write_contacts(contact_list)
     print(f'Added {name} to your contacts')
 
@@ -34,6 +35,7 @@ def view(contact_list):
     print('Contacts')
     print('------------')
     display_contacts = read_contacts()
+    print(display_contacts)
     if display_contacts is None:
         raise TypeError('No contacts in list or contacts failed to load')
     for name, details in display_contacts.items():
@@ -50,11 +52,12 @@ def remove_contact(Contact_list):
     remove = input('which contact would you like to remove: ')
     if remove in contact_list:
         contact_list = contact_list.pop(remove)
-        print(f"Removed {choice} from contacts.")
+        print(f"Removed {remove} from contacts.")
     write_contacts(Contact_list)
 
 def search_contact(Contact_list):
     os.system('cls')
+    read_contacts()
     contact_list = read_contacts()
     if contact_list is None:
         raise TypeError ('Contact list is empty there are no contact to search')
@@ -69,7 +72,8 @@ def search_contact(Contact_list):
 
 def edit_contact(contact_list):
     os.system('cls')
-    contact_list = read_contacts()
+    read_contacts()
+    print(contact_list)
     if contact_list is None:
         raise TypeError ('Contact list is empty there are no contact to search')
     for name in contact_list.keys:
