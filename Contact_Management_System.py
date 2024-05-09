@@ -25,7 +25,7 @@ def add_contact(contact_list):
     os.system('cls')
     name = input('Name: ')
     email = input('what is your email? ')
-    number = input('what is your number? ')
+    number = input('what is your number? (xxx-xxx-xxxx) ')
     contact_list[name] = {'Email': email, 'Phone Number': number}
     write_contacts(contact_list)
     print(f'Added {name} to your contacts')
@@ -42,7 +42,7 @@ def view(contact_list):
         print(f"Name:{name}, Email:{details['Email']}, Phone #:{details['Phone Number']}")
     print('All contacts in list displayed')
 
-def remove_contact(Contact_list):
+def remove_contact(contact_list):
     os.system('cls')
     contact_list = read_contacts()
     if contact_list is None:
@@ -53,20 +53,21 @@ def remove_contact(Contact_list):
     if remove in contact_list:
         contact_list = contact_list.pop(remove)
         print(f"Removed {remove} from contacts.")
-    write_contacts(Contact_list)
+    write_contacts(contact_list)
 
-def search_contact(Contact_list):
+def search_contact(contact_list):
     os.system('cls')
     read_contacts()
-    contact_list = read_contacts()
+    #contact_list = read_contacts()
     if contact_list is None:
         raise TypeError ('Contact list is empty there are no contact to search')
     search_name = input("Enter the name you wish to search: ")
-    if search_name in contact_list:
-        print('Reteiving contact details')
-        print(f'Name: {search_name}')
-        print(f'Email: {contact_list['Email']}')
-        print(f'Phone Nmber: {contact_list['Phone Number']}')
+    for name in contact_list.keys():
+        if search_name == name:
+            print('Reteiving contact details')
+            print(f'Name: {search_name}')
+            print(f"Email: {contact_list['Email']}")
+            print(f"Phone Nmber: {contact_list['Phone Number']}")
     else:
         print(f'Sorry {search_name} is not in your contacts list')
 
@@ -76,7 +77,7 @@ def edit_contact(contact_list):
     print(contact_list)
     if contact_list is None:
         raise TypeError ('Contact list is empty there are no contact to search')
-    for name in contact_list.keys:
+    for name in contact_list.keys():
         print(name)
         edit_choice = input('Enter the name of the contact that you would like to edit: ')
         if edit_choice in contact_list:
