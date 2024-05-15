@@ -19,6 +19,7 @@ def write_contacts(contact_list):
         for name, details in contact_list.items():
             print(name,details)
             file.write(f"{name}-:-{details['Email']}-:-{details['Phone Number']}\n")
+        return contact_list
 
 
 def add_contact(contact_list):
@@ -35,7 +36,6 @@ def view(contact_list):
     print('Contacts')
     print('------------')
     display_contacts = read_contacts()
-    print(display_contacts)
     if display_contacts is None:
         raise TypeError('No contacts in list or contacts failed to load')
     for name, details in display_contacts.items():
@@ -51,56 +51,58 @@ def remove_contact(contact_list):
         print(f"{index}.) {name}")
     remove = input('which contact would you like to remove: ')
     if remove in contact_list:
-        contact_list = contact_list.pop(remove)
+        contact_list.pop(remove)
         print(f"Removed {remove} from contacts.")
     write_contacts(contact_list)
 
 def search_contact(contact_list):
     os.system('cls')
-    read_contacts()
-    #contact_list = read_contacts()
+    #read_contacts()
+    contact_list = read_contacts()
     if contact_list is None:
         raise TypeError ('Contact list is empty there are no contact to search')
     search_name = input("Enter the name you wish to search: ")
-    for name in contact_list.keys():
+    for name, details in contact_list.items():
         if search_name == name:
             print('Reteiving contact details')
             print(f'Name: {search_name}')
-            print(f"Email: {contact_list['Email']}")
-            print(f"Phone Nmber: {contact_list['Phone Number']}")
+            print(f"Email: {details['Email']}")
+            print(f"Phone Nmber: {details['Phone Number']}")
     else:
         print(f'Sorry {search_name} is not in your contacts list')
 
 def edit_contact(contact_list):
     os.system('cls')
-    read_contacts()
+    contact_list = read_contacts()
     print(contact_list)
     if contact_list is None:
         raise TypeError ('Contact list is empty there are no contact to search')
     for name in contact_list.keys():
         print(name)
-        edit_choice = input('Enter the name of the contact that you would like to edit: ')
-        if edit_choice in contact_list:
-            print('Editing this contact will overwrite the old contact information')
-            print('Would you like to continue or do you wish to stop')
-            continue_edit = int(input('1 = continue, 2 = stop: '))
-            if continue_edit == 1:
-                print('Ok this contact will be ovefrwritten')
-                contact_list = contact_list.pop(edit_choice)
-                name = input('Name: ')
-                email = input('what is your email? ')
-                number = input('what is your number? ')
-                contact_list[name] = {'Email': email, 'Number': number}
-                write_contacts(contact_list)
-                print(f'{name}  has been edited your contacts')
-            elif continue_edit == 2:
-                print('Ok this contact will not be edited and info will not be overwritten')
-                break
+    edit_choice = input('Enter the name of the contact that you would like to edit: ')
+    if edit_choice in contact_list:
+        print('Editing this contact will overwrite the old contact information')
+        print('Would you like to continue or do you wish to stop')
+        continue_edit = int(input('1 = continue, 2 = stop: '))
+        if continue_edit == 1:
+            print('Ok this contact will be ovefrwritten')
+            #contact_list = contact_list.pop(edit_choice)
+            name = input('Name: ')
+            email = input('what is your email? ')
+            number = input('what is your number? ')
+            contact_list[edit_choice] = {'Email': email, 'Phone Number': number}
+            write_contacts(contact_list)
+            print(f'{name}  has been edited your contacts')
+        elif continue_edit == 2:
+            print('Ok this contact will not be edited and info will not be overwritten')
+            #break
 
 
 def contact_managment_sys():
     
-    contact_list = {}
+    contact_list = read_contacts()
+    #contact_list = {}
+    #contact_list = read_contacts()
 
     while True:
         option = input('''
@@ -134,7 +136,3 @@ def contact_managment_sys():
 
 contact_managment_sys()
 
-# Project incomplete my read_contact function have an error went i attemp to run it it comes up as file not found
-# i spent a significant amout of time try to correct the error but was unable to.
-#I continued to work on the code so you could at least see what i was able to come up with but the appication unfortunatly 
-# has a lot of error.
